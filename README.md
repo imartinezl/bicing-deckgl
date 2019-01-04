@@ -1,1 +1,3 @@
-# bicing-deckgl-test
+# bicing-deckgl
+
+Bike trips visualization. React + Webpack + Deck.gl
