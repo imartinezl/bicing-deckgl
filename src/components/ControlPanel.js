@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 
-import trips_count from '../json/trips_count_sample.json'
-import trips_init from '../json/trips_init_sample.json'
-
-var tmin = trips_init.tmin*1000;
-var tmax = trips_init.tmax*1000;
-var maxCount = trips_init.maxCount;
-var tSpan = tmax-tmin;
-
 export class ControlPanel extends Component {
 	constructor(props) {
 		super(props);
@@ -16,13 +8,13 @@ export class ControlPanel extends Component {
 	
 	render() {
 		var d = this.props.date.toLocaleString(undefined,{day:'numeric',month:'numeric',year:'numeric',hour: '2-digit',minute: '2-digit'}); 
-
+		//console.log(this.props);
 		return (
 			<div id="control-panel">
 				<h1 id="title">Barcelona Bike Trips</h1>
 				<hr/>
 				<p>{"Visualize the trips carried out with the public system of electric bicycles of the city of Barcelona"}</p>
-				<p>{new Date(tmin).toDateString()," ― ",new Date(tmax).toDateString()}</p>
+				<p>{new Date(this.props.tmin).toDateString()," ― ",new Date(this.props.tmax).toDateString()}</p>
 				<hr/>
 				<label>
 					<p className="g">{"Animation Speed"}

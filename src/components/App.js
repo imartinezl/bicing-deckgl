@@ -19,11 +19,10 @@ var tSpan = tmax-tmin;
 // Set your mapbox token here
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
-// Source data CSV
 const DATA_URL = {
-  TRIPS: '../json/trips_sample.json',
-  STATIONS : 'https://raw.githubusercontent.com/imartinezl/bicing-deckgl/master/stations.json',
-  BUILDINGS: '../json/buildings.json'
+  TRIPS: 'trips_sample.json',
+  STATIONS : 'stations.json',
+  BUILDINGS: 'buildings.json'
 };
 
 const LIGHT_SETTINGS = {
@@ -125,17 +124,17 @@ export class App extends Component {
 	const {buildings = DATA_URL.BUILDINGS, trips = DATA_URL.TRIPS, stations = DATA_URL.STATIONS} = this.props;
 
 	return [
-	  // new TripsLayer({
-		// id: 'trips',
-		// data: trips,
-		// getPath: d => d.segments,
-		// getColor: [255, 25, 100], // d => (d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]), //[50, 255, 255], [23, 184, 190]
-		// opacity: 0.9,
-		// strokeWidth: 5,
-		// lineWidthScale: 5,
-		// trailLength: this.state.trailLength*this.state.loopLength/100,
-		// currentTime: this.state.time
-	  // }),
+	  new TripsLayer({
+		id: 'trips',
+		data: trips,
+		getPath: d => d.segments,
+		getColor: [255, 25, 100], // d => (d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]), //[50, 255, 255], [23, 184, 190]
+		opacity: 0.9,
+		strokeWidth: 5,
+		lineWidthScale: 5,
+		trailLength: this.state.trailLength*this.state.loopLength/100,
+		currentTime: this.state.time
+	  }),
 	  new ScatterplotLayer({
 		id: 'stations',
 		data: stations,
@@ -143,7 +142,7 @@ export class App extends Component {
 		getPosition: d => [d.longitude,d.latitude],
 		getColor: [0, 249, 170],
 		pickable: true,
-		fp64: true,
+		fp64: false,
 		opacity: 0.95,
 		radiusMinPixels: 0,
 		radiusMaxPixels: 30,
@@ -156,23 +155,23 @@ export class App extends Component {
 		  pointerY: info.y
 		})
 	  }),
-	  // new PolygonLayer({
-		// id: 'buildings',
-		// data: buildings,
-		// extruded: true,
-		// wireframe: false,
-		// fp64: false,
-		// opacity: 0.4,
-		// getPolygon: f => f.polygon,
-		// getElevation: 30,
-		// getFillColor: [180, 180, 220, 100], //[160, 160, 180, 200]
-		// lightSettings: LIGHT_SETTINGS
-	  // })
+	  new PolygonLayer({
+		id: 'buildings',
+		data: buildings,
+		extruded: true,
+		wireframe: false,
+		fp64: false,
+		opacity: 0.4,
+		getPolygon: f => f.polygon,
+		getElevation: 30,
+		getFillColor: [180, 180, 220, 100], //[160, 160, 180, 200]
+		lightSettings: LIGHT_SETTINGS
+	  })
 	];
 	}
 
 	render() {
-	const {viewState, controller = true, baseMap = false} = this.props;
+	const {viewState, controller = true, baseMap = true} = this.props;
 
 	return (
 		<div>
@@ -182,9 +181,13 @@ export class App extends Component {
 			animationSpeedChange={this.animationSpeedChange}
 			trailLength={this.state.trailLength}
 			trailLengthChange={this.trailLengthChange}
+			tmin={tmin}
+			tmax={tmax}
 			/>
 			<Graph
 			date={this.state.date}
+			trips_count={trips_count}
+			trips_init={trips_init}
 			/>
 			<div>
 				<DeckGL

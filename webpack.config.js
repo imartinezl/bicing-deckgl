@@ -4,18 +4,18 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 const env = dotenv.config().parsed;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const CONFIG = {
+module.exports = {
 	mode: 'production',
-	entry:  './app/index.js',
+	entry:  './src',
 	output: {
-		filename: 'bundle.js',
-		path: resolve(__dirname, 'dist')
+		path: __dirname + '/dist',
+		filename: 'bundle.js'
 	},
-	devtool: 'source-maps',
+	devtool: 'source-map',
 	devServer: {
-		publicPath: "/app/", // here's the change
-		contentBase: resolve(__dirname, 'dist'),
+		contentBase: __dirname + '/dist/',
 		compress: false,
 		port: 9000
 	},
@@ -30,6 +30,10 @@ const CONFIG = {
 			options: {
 			  objectAssign: 'Object.assign'
 			}
+		  },
+		  {
+			test: /\.css$/,
+			use: ['style-loader','css-loader'],
 		  }
 		]
 	},
@@ -41,9 +45,18 @@ const CONFIG = {
 	},
 	// Optional: Enables reading mapbox token from environment variable
 	plugins: [
-		new webpack.EnvironmentPlugin(['MapboxAccessToken'])
+		new webpack.EnvironmentPlugin(['MapboxAccessToken']),
+    	new HtmlWebpackPlugin({
+    		title: 'deck.gl example',
+    		filename: 'index.html',
+    		template: 'src/html/index_template.html',
+    	}),
+    	new CopyWebpackPlugin(
+    		['./src/json/buildings.json','./src/json/stations.json','./src/json/trips_sample.json']
+    	)
 	],
+	optimization: {
+		// We no not want to minimize our code.
+		minimize: false
+	},
 }
-// This line enables bundling against src in this repo rather than installed module
-module.exports = env => (env ? require('../../webpack.config.local')(CONFIG)(env) : CONFIG);
-

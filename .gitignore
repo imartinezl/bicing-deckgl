@@ -1,7 +1,7 @@
 node_modules
-dist/*
-!dist/index.html
-!dist/style.css
-config.local.json
+dist
 .env
-webpack_backup.config.js
+.DS_Store
+.firebase/
+.firebaserc
+firebase.json

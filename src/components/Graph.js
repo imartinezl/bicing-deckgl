@@ -4,14 +4,6 @@ import {render} from 'react-dom';
 
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine, VictoryLabel, VictoryZoomContainer, VictoryBrushContainer, VictoryArea } from 'victory';
 
-import trips_count from '../json/trips_count_sample.json'
-import trips_init from '../json/trips_init_sample.json'
-
-var tmin = trips_init.tmin*1000;
-var tmax = trips_init.tmax*1000;
-var maxCount = trips_init.maxCount;
-var tSpan = tmax-tmin;
-
 const vStyles = {
 	xAxis: {
 		axis: {
@@ -92,40 +84,48 @@ export class Graph extends Component {
 	
 	constructor(props) {
 		super(props);
+		this.trips_count = props.trips_count;
+		this.trips_init = props.trips_init;
+
+		this.tmin = this.trips_init.tmin*1000;
+		this.tmax = this.trips_init.tmax*1000;
+		this.maxCount = this.trips_init.maxCount;
+		this.tSpan = this.tmax-this.tmin;
 	}	
 	
 	_getTripsCounts(){
-		var data2 = [];
-		for(var i = 0; i < trips_count.length; i++) {
-			data2[i] = {};
-			data2[i].x = new Date(trips_count[i].date);
-			data2[i].y = trips_count[i].count;
+		var data = [];
+		for(var i = 0; i < this.trips_count.length; i++) {
+			data[i] = {};
+			data[i].x = new Date(this.trips_count[i].date);
+			data[i].y = this.trips_count[i].count;
 		}
-		return data2;		
+		return data;		
 	}
 	_getAreaData(){
-		var data2 = [
-			{x: new Date(trips_count[0].date), y: maxCount},
-			{x: new Date(trips_count[trips_count.length-1].date), y: maxCount}
+		var data = [
+			{x: new Date(this.trips_count[0].date), y: this.maxCount},
+			{x: new Date(this.trips_count[this.trips_count.length-1].date), y: this.maxCount}
 		];
-		if(this.props.date < new Date(trips_count[trips_count.length-1].date)){
-			data2 = [
-				{x: new Date(trips_count[0].date), y: maxCount},
-				{x: this.props.date, y: maxCount}
+		if(this.props.date < new Date(this.trips_count[this.trips_count.length-1].date)){
+			data = [
+				{x: new Date(this.trips_count[0].date), y: this.maxCount},
+				{x: this.props.date, y: this.maxCount}
 			];
 		}
-		return data2;		
+		return data;		
 	}
 	_dateTickValues(){
 		const n = 6;
 		var ticks = [];
 		for(var i=0; i<n; i++){
-			ticks[i] = new Date(tmin + (tmax-tmin)*i/n);
+			ticks[i] = new Date(this.tmin + (this.tmax-this.tmin)*i/n);
 		}
 		return ticks;
 	}
 	
 	render() {
+
 		return(
 		<div id="VictoryContainer">
 			<VictoryChart
@@ -145,20 +145,20 @@ export class Graph extends Component {
 				  orientation="left"
 				  standalone={false}
 				  style={vStyles.yAxis}
-				  tickValues={[0,maxCount]}
+				  tickValues={[0,this.maxCount]}
 				/>
 				<VictoryAxis dependentAxis
 				  orientation="right"
 				  standalone={false}
 				  style={vStyles.yAxis}
-				  tickValues={[0,maxCount]}
+				  tickValues={[0,this.maxCount]}
 				/>
 				<VictoryArea 
 					data={this._getTripsCounts()}
 					interpolation="monotoneX"
 					style={vStyles.areaData}
 					scale={{x: "time", y: "linear"}}
-					domain={{x:[tmin, tmax], y: [0, maxCount]}}
+					domain={{x:[this.tmin, this.tmax], y: [0, this.maxCount]}}
 					domainPadding={0}
 					y0={0}
 				/>
