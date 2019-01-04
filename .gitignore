@@ -1,6 +1,7 @@
 node_modules
 dist/*
 !dist/index.html
+!dist/style.css
 config.local.json
 .env
 webpack_backup.config.js
