@@ -75,7 +75,7 @@ p.d2{
 }
 
 
-input[type=range] {
+/*input[type=range] {
   -webkit-appearance: none;
   width: 100px;
   vertical-align: middle;
@@ -83,8 +83,13 @@ input[type=range] {
 input[type=range]:focus {
   outline: none;
 }
-
 input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #FFFFFF;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  background: #FFFFFF;
+}	
+input[type=range]::-webkit-slider-thumb {
   background: #FFFFFF;
 }
 input[type=range]::-moz-range-track {
@@ -105,4 +110,105 @@ input[type=range]::-moz-range-thumb {
   border-radius: 0px;
   background: rgb(255, 25, 100);
   cursor: pointer;
+}*/
+/*Apply styling that will override basic appearance*/
+/*nb this example is Chrome only*/
+
+input[type=range] {
+    -webkit-appearance: none;
+    vertical-align: middle;
+    width: 100px;
 }
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100px;
+    height: 2px;
+    background: #FFFFFF;
+	border-radius: 0px;
+	border: 0px solid #000000;
+	cursor: pointer;
+	animate: 0.2s;
+	box-shadow: 0px 0px 0px #000000;
+	vertical-align: middle;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+	box-shadow: 0px 0px 0px #000000;
+	border: 0px solid #000000;
+	height: 15px;
+	width: 5px;
+	border-radius: 0px;
+	background: rgb(255, 25, 100);
+	cursor: pointer;
+	margin-top: -7px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #FFFFFF;
+}
+
+input[type=range]::-moz-range-track {
+	width: 100px;
+    height: 2px;
+    background: #FFFFFF;
+	border-radius: 0px;
+	border: 0px solid #000000;
+	cursor: pointer;
+	animate: 0.2s;
+	box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none;
+	box-shadow: 0px 0px 0px #000000;
+	border: 0px solid #000000;
+	height: 15px;
+	width: 5px;
+	border-radius: 0px;
+	background: rgb(255, 25, 100);
+	cursor: pointer;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: none;
+}
+
+input[type=range]::-ms-track {
+    width: 100px;
+    height: 5px;
+    
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+    
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+    background: #fff;
+    border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+    background: #fff;
+    border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+	box-shadow: 0px 0px 0px #000000;
+	border: 0px solid #000000;
+	height: 15px;
+	width: 5px;
+	border-radius: 0px;
+	background: rgb(255, 25, 100);
+	cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+    background: #fff;
+}
+input[type=range]:focus::-ms-fill-upper {
+    background: #fff;
+}
+  

@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "Express-React-Babel-Webpack Stack",
   "scripts": {
-    "app": "./node_modules/.bin/webpack --progress --hot  && node ./app",
     "start": "webpack-dev-server --progress --hot --open",
-    "build": "NODE_ENV=production webpack --progress --env.prod=true"
+    "build": "NODE_ENV=production webpack --progress --env.prod=true",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "@deck.gl/experimental-layers": "^6.3.0",

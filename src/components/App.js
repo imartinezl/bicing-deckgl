@@ -124,17 +124,17 @@ export class App extends Component {
 	const {buildings = DATA_URL.BUILDINGS, trips = DATA_URL.TRIPS, stations = DATA_URL.STATIONS} = this.props;
 
 	return [
-	  new TripsLayer({
-		id: 'trips',
-		data: trips,
-		getPath: d => d.segments,
-		getColor: [255, 25, 100], // d => (d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]), //[50, 255, 255], [23, 184, 190]
-		opacity: 0.9,
-		strokeWidth: 5,
-		lineWidthScale: 5,
-		trailLength: this.state.trailLength*this.state.loopLength/100,
-		currentTime: this.state.time
-	  }),
+	 //  new TripsLayer({
+		// id: 'trips',
+		// data: trips,
+		// getPath: d => d.segments,
+		// getColor: [255, 25, 100], // d => (d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]), //[50, 255, 255], [23, 184, 190]
+		// opacity: 0.9,
+		// strokeWidth: 5,
+		// lineWidthScale: 5,
+		// trailLength: this.state.trailLength*this.state.loopLength/100,
+		// currentTime: this.state.time
+	 //  }),
 	  new ScatterplotLayer({
 		id: 'stations',
 		data: stations,
@@ -171,7 +171,7 @@ export class App extends Component {
 	}
 
 	render() {
-	const {viewState, controller = true, baseMap = true} = this.props;
+	const {viewState, controller = true, baseMap = false} = this.props;
 
 	return (
 		<div>
