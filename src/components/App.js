@@ -11,6 +11,8 @@ import {ControlPanel} from './ControlPanel.js'
 import trips_count from '../json/trips_count_sample.json'
 import trips_init from '../json/trips_init_sample.json'
 
+import moment from 'moment';
+
 var tmin = trips_init.tmin*1000;
 var tmax = trips_init.tmax*1000;
 var maxCount = trips_init.maxCount;
@@ -92,7 +94,7 @@ export class App extends Component {
 		
 		this.setState({
 		  time: ((timestamp % loopTime) / loopTime) * loopLength,
-		  date: new Date(this.state.time/this.state.loopLength*tSpan+tmin-utcDelay)
+		  date: (this.state.time/this.state.loopLength*tSpan+tmin-utcDelay)
 		});
 		this._animationFrame = window.requestAnimationFrame(this._animate.bind(this));
 	}
@@ -171,12 +173,12 @@ export class App extends Component {
 	}
 
 	render() {
-	const {viewState, controller = true, baseMap = true} = this.props;
+	const {viewState, controller = true, baseMap = false} = this.props;
 
 	return (
 		<div>
 			<ControlPanel 
-			date={this.state.date}
+			date={new Date(this.state.date)}
 			animationSpeed={this.state.animationSpeed}
 			animationSpeedChange={this.animationSpeedChange}
 			trailLength={this.state.trailLength}
@@ -185,7 +187,7 @@ export class App extends Component {
 			tmax={tmax}
 			/>
 			<Graph
-			date={this.state.date}
+			date={moment(this.state.date)}
 			trips_count={trips_count}
 			trips_init={trips_init}
 			/>

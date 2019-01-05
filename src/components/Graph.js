@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react';
 import {render} from 'react-dom';
+import moment from 'moment';
 
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine, VictoryLabel, VictoryZoomContainer, VictoryBrushContainer, VictoryArea } from 'victory';
 
@@ -73,11 +74,14 @@ const vStyles = {
 	areaDate: {
 		data: { 
 			stroke: "rgb(0, 249, 170)",
-			fill: "rgba(0, 249, 170)",
+			fill: "rgb(0, 249, 170)",
 			fillOpacity: 0.1,
 			strokeWidth: 0
 		}
 	}
+}
+function mdate(x){
+	return moment(x, 'YYYY-MM-DD HH:mm:ss');
 }
 
 export class Graph extends Component {
@@ -92,27 +96,37 @@ export class Graph extends Component {
 		this.maxCount = this.trips_init.maxCount;
 		this.tSpan = this.tmax-this.tmin;
 	}	
-	
 	_getTripsCounts(){
 		var data = [];
 		for(var i = 0; i < this.trips_count.length; i++) {
 			data[i] = {};
-			data[i].x = new Date(this.trips_count[i].date);
+			data[i].x = mdate(this.trips_count[i].date);
+			// data[i].x = new Date(this.trips_count[i].date);			
 			data[i].y = this.trips_count[i].count;
 		}
 		return data;		
 	}
 	_getAreaData(){
 		var data = [
-			{x: new Date(this.trips_count[0].date), y: this.maxCount},
-			{x: new Date(this.trips_count[this.trips_count.length-1].date), y: this.maxCount}
+			{x: mdate(this.trips_count[0].date), y: this.maxCount},
+			{x: mdate(this.trips_count[this.trips_count.length-1].date), y: this.maxCount}
 		];
-		if(this.props.date < new Date(this.trips_count[this.trips_count.length-1].date)){
+		if(this.props.date < mdate(this.trips_count[this.trips_count.length-1].date) ){
 			data = [
-				{x: new Date(this.trips_count[0].date), y: this.maxCount},
+				{x: mdate(this.trips_count[0].date), y: this.maxCount},
 				{x: this.props.date, y: this.maxCount}
 			];
 		}
+		// var data = [
+		// 	{x: new Date(this.trips_count[0].date), y: this.maxCount},
+		// 	{x: new Date(this.trips_count[this.trips_count.length-1].date), y: this.maxCount}
+		// ];
+		// if(this.props.date < new Date(this.trips_count[this.trips_count.length-1].date)){
+		// 	data = [
+		// 		{x: new Date(this.trips_count[0].date), y: this.maxCount},
+		// 		{x: this.props.date, y: this.maxCount}
+		// 	];
+		// }
 		return data;		
 	}
 	_dateTickValues(){
@@ -127,7 +141,7 @@ export class Graph extends Component {
 	render() {
 
 		return(
-		<div id="VictoryContainer">
+		<div id="GraphContainer">
 			<VictoryChart
 				height={100}
 				width={750}
