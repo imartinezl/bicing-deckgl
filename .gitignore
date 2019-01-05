@@ -1,6 +1,5 @@
 node_modules
-dist/
-dist/index.html
+dist/*
 .env
 .DS_Store
 .firebase/
