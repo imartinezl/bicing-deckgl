@@ -173,7 +173,7 @@ export class App extends Component {
 	}
 
 	render() {
-	const {viewState, controller = true, baseMap = false} = this.props;
+	const {viewState, controller = true, baseMap = true} = this.props;
 
 	return (
 		<div>
