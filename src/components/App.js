@@ -2,8 +2,11 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import {StaticMap} from 'react-map-gl';
-import DeckGL, {PolygonLayer,ScatterplotLayer,GeoJsonLayer} from 'deck.gl';
+import DeckGL, {PolygonLayer,ScatterplotLayer,GeoJsonLayer, LinearInterpolator} from 'deck.gl';
 import {TripsLayer} from '@deck.gl/experimental-layers';
+
+const transitionInterpolator = new LinearInterpolator(['bearing']);
+
 
 import {Graph} from './Graph.js'
 import {ControlPanel} from './ControlPanel.js'
@@ -61,13 +64,37 @@ export class App extends Component {
 		this.state = {
 		  time: 0,
 		  date: 0,
-		  animationSpeed: 5, //percentage of loopLength
-		  trailLength: 1,   //percentage of loopLength
+		  animationSpeed: 2, //percentage of loopLength
+		  trailLength: 2,   //percentage of loopLength
 		  loopLength: 2000,
+		  viewState: INITIAL_VIEW_STATE,
 		};
 		this.animationSpeedChange = this.animationSpeedChange.bind(this);
 		this.trailLengthChange = this.trailLengthChange.bind(this);
 		
+		this._onLoad = this._onLoad.bind(this);
+		this._onViewStateChange = this._onViewStateChange.bind(this);
+		this._rotateCamera = this._rotateCamera.bind(this);
+	}
+
+	_onLoad() {
+		this._rotateCamera();
+	}
+	_onViewStateChange({viewState}) {
+		this.setState({viewState});
+	}
+	_rotateCamera() {
+		// change bearing by 120 degrees.
+		const bearing = this.state.viewState.bearing + 120;
+		this.setState({
+			viewState: {
+				...this.state.viewState,
+				bearing,
+				transitionDuration: 20000,
+				transitionInterpolator,
+				onTransitionEnd: this._rotateCamera
+			}
+		});
 	}
 	componentDidMount() {
 		this._animate();
@@ -173,8 +200,9 @@ export class App extends Component {
 	}
 
 	render() {
-	const {viewState, controller = true, baseMap = true} = this.props;
-
+	//const {viewState, controller = true, baseMap = true} = this.props;
+	const {controller = true, baseMap = true} = this.props;
+	const viewState = this.state.viewState;
 	return (
 		<div>
 			<ControlPanel 
@@ -197,6 +225,8 @@ export class App extends Component {
 				initialViewState={INITIAL_VIEW_STATE}
 				viewState={viewState}
 				controller={controller}
+				onLoad={this._onLoad}
+        		onViewStateChange={this._onViewStateChange}
 				>
 					{baseMap && (
 						<StaticMap
