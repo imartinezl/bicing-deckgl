@@ -65,7 +65,7 @@ export class App extends Component {
 		  time: 0,
 		  date: 0,
 		  animationSpeed: 2, //percentage of loopLength
-		  trailLength: 2,   //percentage of loopLength
+		  trailLength: 5,   //percentage of loopLength
 		  loopLength: 2000,
 		  viewState: INITIAL_VIEW_STATE,
 		};
